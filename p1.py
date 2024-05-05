@@ -1,0 +1,67 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df=pd.read_csv('houseprices.csv')
+
+x=df['area'].values.reshape(-1,1)
+y=df['price'].values.reshape(-1,1)
+
+x=(x-np.mean(x))/np.std(x)
+
+def compute_cost(x,y,theta):
+    m=len(y)
+    predictions=x.dot(theta)
+    cost=(1/(2*m))*np.sum(np.square(predictions -y))
+    return cost
+
+
+def gradient_descent(x,y,theta,learning_rate,iterations):
+    m=len(y)
+    cost_history=np.zeros(iterations)
+    for i in range(iterations):
+        predictions=x.dot(theta)
+        errors = np.subtract(predictions,y)
+        theta=theta-(learning_rate * (1/m) * x.T.dot(errors))
+        cost_history[i]=compute_cost(x,y,theta)
+    return theta,cost_history
+
+
+theta=np.zeros((2,1))
+iterations=1500
+learning_rate=0.1
+x_b=np.c_[np.ones((len(x),1)),x]
+
+
+theta , cost_history =gradient_descent(x_b,y,theta,learning_rate,iterations)
+
+print('intercept:',theta[0])
+print('slope:',theta[1])
+
+
+    
+# Plotting the convergence of the cost function
+plt.plot(range(1, iterations + 1), cost_history, color='blue')
+plt.xlabel('Iterations')
+plt.ylabel('Cost')
+plt.title('Convergence of Gradient Descent')
+plt.show()
+
+
+# Plotting the data and the best fit line
+plt.scatter(x, y, color='red', marker='+')
+plt.xlabel('Area')
+plt.ylabel('Price')
+plt.title('Linear Regression with Gradient Descent')
+plt.plot(x, x_b.dot(theta), color='blue')  # Plotting the regression line
+plt.show()
+
+
+# Prediction
+area_new = 3300
+# Normalize the new data point
+area_new_normalized = (area_new - np.mean(df['area'])) / np.std(df['area'])
+price_new = np.array([1, area_new_normalized]).dot(theta)
+print("Predicted price for an area of 3300 sqft:", price_new[0])
+
+
