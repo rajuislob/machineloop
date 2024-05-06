@@ -1,0 +1,49 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Generate some random data for demonstration
+np.random.seed(0)
+X = 2 * np.random.rand(100, 1)  # if data set is given import it with pd.read into df 
+#df=pd.read_csv("filename.csv")
+#X=df.drop("target_column")
+#y=df["target_column"]
+y = 4 + 3 * X + np.random.randn(100, 1)
+
+plt.scatter(X,y)
+plt.show()
+
+# Add a bias term to X (X0 = 1)
+X_b = np.c_[np.ones((100, 1)), X]
+#plt.scatter(X_b,y)
+#plt.show()
+print(X_b.shape, y.shape)
+
+
+# Gradient Descent Parameters
+eta = 0.1  # learning rate
+n_iterations = 100
+m = 100  # number of instances
+
+# Initialize theta with random values
+theta = np.random.randn(2, 1)
+print(theta)
+print("//////")
+# Gradient Descent
+for iteration in range(n_iterations):
+    gradients = 2/m * X_b.T.dot(X_b.dot(theta) - y)
+    theta = theta - eta * gradients
+    print(theta)
+# Final theta values (intercept and slope)
+intercept, slope = theta
+
+# Print the final parameters
+print("Intercept:", intercept)
+print("Slope:", slope)
+
+# Plot the data and the linear regression line
+plt.scatter(X, y)
+plt.plot(X, X_b.dot(theta), color='red')
+plt.xlabel("X")
+plt.ylabel("y")
+plt.title("Linear Regression using Gradient Descent")
+plt.show()
