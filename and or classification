@@ -1,0 +1,31 @@
+# AND operator
+def AND(x1, x2):
+    w1, w2, threshold = 0.5, 0.5, 0.7
+    weighted_sum = w1 * x1 + w2 * x2
+    return 1 if weighted_sum >= threshold else 0
+
+# OR operator
+def OR(x1, x2):
+    w1, w2, threshold = 0.5, 0.5, 0.3
+    weighted_sum = w1 * x1 + w2 * x2
+    return 1 if weighted_sum >= threshold else 0
+
+# NOT operator
+def NOT(x1):
+    w1, threshold = -1, -0.5
+    weighted_sum = w1 * x1
+    return 1 if weighted_sum >= threshold else 0
+
+# Testing
+print("AND(0, 0):", AND(0, 0))
+print("AND(0, 1):", AND(0, 1))
+print("AND(1, 0):", AND(1, 0))
+print("AND(1, 1):", AND(1, 1))
+
+print("OR(0, 0):", OR(0, 0))
+print("OR(0, 1):", OR(0, 1))
+print("OR(1, 0):", OR(1, 0))
+print("OR(1, 1):", OR(1, 1))
+
+print("NOT(0):", NOT(0))
+print("NOT(1):", NOT(1))
